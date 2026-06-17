@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Olivos - La Embajada del Reino | Galería Profesional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold-primary: #C9A227;
+            --gold-light: #E8D5A3;
+            --gold-dark: #8B6914;
+            --black: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --medium-gray: #2d2d2d;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 50%, #1a1200 100%);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+        }
+
+        .header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(201, 162, 39, 0.3);
+        }
+
+        .header .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: var(--gold-light);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .header .divider {
+            width: 100px;
+            height: 2px;
+            background: var(--gold-primary);
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .header .divider::before,
+        .header .divider::after {
+            content: '◆';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold-primary);
+            font-size: 10px;
+        }
+
+        .header .divider::before { left: -15px; }
+        .header .divider::after { right: -15px; }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* Left Panel - Gallery */
+        .gallery-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--gold-primary);
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: 3px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .gallery-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: var(--gold-primary);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            aspect-ratio: 1;
+            background: var(--medium-gray);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 10px 40px rgba(201, 162, 39, 0.2);
+        }
+
+        .gallery-item.active {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 30px rgba(201, 162, 39, 0.3), inset 0 0 20px rgba(201, 162, 39, 0.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 10px 10px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .gallery-item .overlay span {
+            font-size: 0.75rem;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .gallery-item .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--gold-primary);
+            color: var(--black);
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Right Panel - Description */
+        .description-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            border-radius: 20px;
+            padding: 35px;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 20px;
+            min-height: 600px;
+        }
+
+        .desc-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .desc-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+            letter-spacing: 3px;
+        }
+
+        .desc-header .image-name {
+            font-size: 0.9rem;
+            color: var(--gold-light);
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        .desc-content {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .desc-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(201, 162, 39, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--gold-primary);
+            transition: all 0.3s ease;
+        }
+
+        .desc-section:hover {
+            background: rgba(201, 162, 39, 0.08);
+            transform: translateX(5px);
+        }
+
+        .desc-section h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 2px;
+        }
+
+        .desc-section h3 .icon {
+            font-size: 1.2rem;
+        }
+
+        .desc-section p, .desc-section ul {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #ccc;
+            font-weight: 300;
+        }
+
+        .desc-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .desc-section ul li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .desc-section ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--gold-primary);
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .color-circle:hover {
+            transform: scale(1.15);
+        }
+
+        .color-label {
+            font-size: 0.7rem;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .color-hex {
+            font-size: 0.65rem;
+            color: #888;
+            font-family: monospace;
+        }
+
+        .significance-box {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(201, 162, 39, 0.03));
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .significance-box h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+        }
+
+        .significance-box p {
+            font-size: 0.9rem;
+            line-height: 1.9;
+            color: #ddd;
+            font-weight: 300;
+        }
+
+        .placeholder-text {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 100px 20px;
+            font-size: 1rem;
+        }
+
+        .placeholder-text .icon-large {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .description-panel {
+                position: relative;
+                top: 0;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+                letter-spacing: 4px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold-dark);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-primary);
+        }
+
+        /* Loading shimmer */
+        .shimmer {
+            background: linear-gradient(90deg, var(--medium-gray) 25%, #3d3d3d 50%, var(--medium-gray) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Los Olivos</h1>
+        <p class="subtitle">La Embajada del Reino</p>
+        <div class="divider"></div>
+    </header>
+
+    <main class="main-container">
+        <!-- Panel Izquierdo: Galería -->
+        <section class="gallery-panel">
+            <h2 class="gallery-title">Galería de Imágenes</h2>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Las imágenes se cargan dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Panel Derecho: Descripción Técnica -->
+        <section class="description-panel" id="descriptionPanel">
+            <div class="desc-header">
+                <h2>Análisis Técnico</h2>
+                <p class="image-name" id="imageName">Selecciona una imagen para ver su descripción detallada</p>
+            </div>
+            <div id="descContent">
+                <div class="placeholder-text">
+                    <div class="icon-large">👑</div>
+                    <p>Haz clic en cualquier imagen de la galería para visualizar su análisis técnico completo: paleta de colores, composición visual, elementos gráficos y significado simbólico.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Datos de las imágenes con descripciones técnicas detalladas
+        const images = [
+            {
+                id: 1,
+                src: "https://raw.githubusercontent.com/tsucesarherrera-afk/los-olivos/main/imagenes/Gemini_Generated_Image_k0uzytk0uzytk0uz.png",
+                name: "Logo Los Olivos - Variante Principal",
+                alt: "Logo principal dorado sobre fondo blanco",
+                colors: [
+                    { hex: "#C9A227", name: "Oro Imperial", desc: "Dorado cálido con tonos ámbar" },
+                    { hex: "#8B6914", name: "Oro Envejecido", desc: "Dorado oscuro para sombras" },
+                    { hex: "#FFFFFF", name: "Blanco Puro", desc: "Fondo limpio y elegante" },
+                    { hex: "#1A1A1A", name: "Negro Carbón", desc: "Texto y contornos" }
+                ],
+                composition: "Diseño simétrico vertical con jerarquía visual clara. El ícono de corona-olivo ocupa el tercio superior como elemento focal, seguido del nombre 'LOS OLIVOS' en tipografía serif de peso medio, y el eslogan 'LA EMBAJADA DEL REINO' en tamaño reducido como línea de base.",
+                elements: [
+                    "Corona real estilizada con 3 picos principales y gema central",
+                    "Rama de olivo con 7 hojas y 2 aceitunas",
+                    "Tipografía serif con efecto 3D de relieve metálico",
+                    "Sombra proyectada suave para profundidad",
+                    "Líneas decorativas horizontales"
+                ],
+                technique: "Renderizado 3D con materiales PBR (Physically Based Rendering). Efecto de metal dorado pulido con reflejos suaves. Profundidad de campo sutil en bordes. Iluminación cenital con fill light lateral.",
+                meaning: "La corona simboliza la realeza espiritual y la soberanía del Reino de Dios. La rama de olivo representa la paz, la unción y la prosperidad prometida. Juntos conforman la identidad de una embajada celestial: un lugar donde la autoridad divina (corona) se une con la gracia y la paz (olivo). El dorado evoca la gloria divina, mientras que la simetría transmite orden y estabilidad espiritual."
+            },
+            {
+                id: 2,
+                src: "https://raw.githubusercontent.com/tsucesarherrera-afk/los-olivos/main/imagenes/Gemini_Generated_Image_kwx4g5kwx4g5kwx4.png",
+                name: "Logo Los Olivos - Versión Alternativa",
+                alt: "Logo alternativo con fondo transparente",
+                colors: [
+                    { hex: "#D4AF37", name: "Oro Metálico", desc: "Dorado brillante con reflejos" },
+                    { hex: "#4A6741", name: "Verde Oliva", desc: "Hojas de olivo naturales" },
+                    { hex: "#F5F5F5", name: "Blanco Perla", desc: "Texto principal elegante" },
+                    { hex: "#2C2C2C", name: "Gris Antracita", desc: "Sombreado y profundidad" }
+                ],
+                composition: "Layout centrado con proporción áurea. El emblema corona-olivo se sitúa en el punto focal superior. El texto 'LOS OLIVOS' utiliza tracking amplio (+50) para elegancia. El eslogan inferior emplea un interlineado generoso que respira autoridad.",
+                elements: [
+                    "Corona con diseño de filigrado ornamental",
+                    "Rama de olivo con follaje detallado en verde",
+                    "Letras con efecto de bisel y extrusión 3D",
+                    "Sistema de sombras paralelas",
+                    "Bordes redondeados en todos los elementos"
+                ],
+                technique: "Vectorización precisa con gradientes lineales para simular volumen. Uso de mesh gradients para transiciones de color en el dorado. Efecto de embossing sutil en tipografía. Anti-aliasing optimizado para escalado.",
+                meaning: "Esta variante enfatiza la dualidad entre lo celestial (corona dorada) y lo terrenal (olivo verde). El verde oliva representa la vida eterna y la fecundidad, mientras que la corona dorada habla de la recompensa y el reconocimiento divino. La combinación sugiere que en esta embajada se cultiva vida abundante bajo autoridad celestial. La transparencia del fondo simboliza la claridad y honestidad del mensaje."
+            },
+            {
+                id: 3,
+                src: "https://raw.githubusercontent.com/tsucesarherrera-afk/los-olivos/main/imagenes/WhatsApp%20Image%202026-06-17%20at%208.18.43%20AM.jpeg",
+                name: "Logo Los Olivos - Render Premium",
+                alt: "Logo con efecto 3D premium sobre fondo blanco",
+                colors: [
+                    { hex: "#B8860B", name: "Oro Oscuro", desc: "Dorado profundo con matices cobrizos" },
+                    { hex: "#E8D5A3", name: "Champán", desc: "Reflejos luminosos dorados" },
+                    { hex: "#FAFAFA", name: "Blanco Hielo", desc: "Fondo neutro y limpio" },
+                    { hex: "#3D2914", name: "Bronce", desc: "Sombras cálidas en bordes" }
+                ],
+                composition: "Armonía visual perfecta con equilibrio simétrico. La corona se integra orgánicamente con la rama de olivo que la atraviesa diagonalmente. La tipografía presenta un peso visual consistente con kerning ajustado manualmente. Espaciado vertical proporcional entre elementos.",
+                elements: [
+                    "Corona real con detalles de joyería",
+                    "Rama de olivo con textura natural",
+                    "Letras con efecto de metal cromado",
+                    "Reflejos ambientales realistas",
+                    "Sistema de luces y sombras coherente"
+                ],
+                technique: "Modelado 3D con software de renderizado profesional (probablemente Blender/Cinema 4D). Materiales de oro con configuración de metalness 1.0 y roughness 0.3. Iluminación HDRI para reflejos realistas. Post-procesado con bloom sutil y corrección de color.",
+                meaning: "El render premium comunica excelencia y dedicación. Cada detalle cuidadosamente elaborado refleja el compromiso con la calidad que caracteriza a la embajada. La corona representa la cabeza (Cristo como cabeza de la iglesia) y el olivo simboliza los miembros unidos a Él. El efecto 3D tridimensional sugiere una fe viva, palpable y que trasciende lo plano o superficial."
+            },
+            {
+                id: 4,
+                src: "https://raw.githubusercontent.com/tsucesarherrera-afk/los-olivos/main/imagenes/WhatsApp%20Image%202026-06-17%20at%208.18.43%20AM%20(1).jpeg",
+                name: "Logo Los Olivos - Versión Dorada Clásica",
+                alt: "Logo clásico dorado con fondo blanco",
+                colors: [
+                    { hex: "#DAA520", name: "Oro Clásico", desc: "Dorado tradicional cálido" },
+                    { hex: "#FFD700", name: "Amarillo Oro", desc: "Puntos de luz brillantes" },
+                    { hex: "#FFFFFF", name: "Blanco Puro", desc: "Base limpia y minimalista" },
+                    { hex: "#5C4033", name: "Marrón Oscuro", desc: "Sombras en profundidad" }
+                ],
+                composition: "Estructura clásica de emblema institucional. Disposición vertical con énfasis en la legibilidad. La corona-olivo actúa como sello heráldico. El texto principal domina el espacio central. El eslogan funciona como línea de autoridad.",
+                elements: [
+                    "Corona con diseño heráldico europeo",
+                    "Rama de olivo con hojas estilizadas",
+                    "Tipografía con serif elegantes",
+                    "Efecto de relieve suave",
+                    "Contornos sutiles de definición"
+                ],
+                technique: "Diseño vectorial con técnicas clásicas de identidad corporativa. Uso de gradientes radiales para simular luz cenital. Efecto de drop shadow con desenfoque gaussiano. Tipografía con hinting optimizado para pantalla.",
+                meaning: "La versión clásica conecta con la tradición eclesiástica histórica. La corona heráldica evoca la nobleza espiritual del creyente como 'linaje escogido, real sacerdocio'. El olivo es remembranza del Monte de los Olivos, lugar de oración y entrega de Jesús. Esta imagen transmite herencia, tradición sólida y fundamento bíblico. El dorado clásico evoca la gloria que no pasa, la riqueza incorruptible."
+            },
+            {
+                id: 5,
+                src: "https://raw.githubusercontent.com/tsucesarherrera-afk/los-olivos/main/imagenes/WhatsApp%20Image%202026-06-17%20at%208.18.43%20AM%20(2).jpeg",
+                name: "Logo Los Olivos - Versión Transparente",
+                alt: "Logo sobre fondo transparente para aplicaciones versátiles",
+                colors: [
+                    { hex: "#C0C0C0", name: "Plata", desc: "Texto principal en acabado plateado" },
+                    { hex: "#A8A8A8", name: "Gris Plata", desc: "Tonos intermedios metálicos" },
+                    { hex: "#6B8E23", name: "Verde Oliva Oscuro", desc: "Follaje natural profundo" },
+                    { hex: "#DAA520", name: "Oro Suave", desc: "Corona con tonos dorados sutiles" }
+                ],
+                composition: "Diseño versátil con fondo transparente (alpha channel). Mantiene la jerarquía visual pero con paleta reducida. La corona dorada contrasta elegantemente con el texto plateado. La rama de olivo aporta el único color natural.",
+                elements: [
+                    "Corona en tonos dorados suaves",
+                    "Rama de olivo en verde natural profundo",
+                    "Texto 'LOS OLIVOS' en plateado cromado",
+                    "Eslogan en gris plata",
+                    "Biselado sutil en todos los elementos"
+                ],
+                technique: "Exportación PNG-24 con canal alpha. Optimización para fondos variables. Trazado vectorial con curvas de Bézier suaves. Efecto de metal plateado con gradientes duotono. Compatibilidad cross-platform para impresión y digital.",
+                meaning: "La versión transparente simboliza la adaptabilidad y universalidad del mensaje. La plata representa la redención y la palabra pura de Dios ('más deseables que el oro, más que mucho oro fino'). El verde oscuro del olivo habla de madurez espiritual y raíces profundas. Esta versión es la más versátil, lista para adaptarse a cualquier contexto, simbolizando que el Reino se manifiesta en toda circunstancia y fondo de vida."
+            }
+        ];
+
+        // Fallback images (las que funcionaron)
+        const fallbackImages = [
+            {
+                id: 1,
+                src: "https://raw.githubusercontent.com/tsucesarherrera-afk/los-olivos/main/imagenes/WhatsApp%20Image%202026-06-17%20at%208.18.43%20AM.jpeg",
+                name: "Logo Los Olivos - Render Premium Dorado",
+                alt: "Logo 3D dorado sobre fondo blanco",
+                colors: [
+                    { hex: "#C9A227", name: "Oro Imperial", desc: "Dorado cálido con brillo metálico" },
+                    { hex: "#8B6914", name: "Oro Oscuro", desc: "Sombras y profundidad dorada" },
+                    { hex: "#FFFFFF", name: "Blanco Puro", desc: "Fondo limpio y minimalista" },
+                    { hex: "#D4AF37", name: "Oro Metálico", desc: "Reflejos brillantes en relieve" }
+                ],
+                composition: "Diseño vertical simétrico con jerarquía clara. El emblema corona-olivo corona la composición en el tercio superior. 'LOS OLIVOS' ocupa el espacio central con tipografía serif de gran peso visual. 'LA EMBAJADA DEL REINO' cierra la composición como línea de autoridad. La iluminación cenital crea sombras proyectadas que añaden profundidad tridimensional.",
+                elements: [
+                    "Corona real estilizada con 3 picos y gema central en dorado brillante",
+                    "Rama de olivo con hojas y aceitunas integradas con la corona",
+                    "Tipografía serif con efecto 3D de relieve metálico dorado",
+                    "Sombra proyectada suave hacia abajo y derecha",
+                    "Acabado de metal pulido con reflejos realistas"
+                ],
+                technique: "Renderizado 3D profesional con materiales PBR (Physically Based Rendering). Configuración de metalness alto y roughness medio-bajo para simular oro pulido. Iluminación de tres puntos: key light cenital, fill light lateral y back light sutil. Post-procesado con corrección de color cálida y bloom sutil en reflejos.",
+                meaning: "La corona representa la soberanía divina y la realeza espiritual del creyente en Cristo. El olivo simboliza la paz, la unción del Espíritu Santo y la vida abundante. Juntos expresan la identidad de la iglesia como 'Embajada del Reino': un lugar donde la autoridad celestial se manifiesta con gracia y paz. El dorado evoca la gloria de Dios, la pureza y el valor incalculable del evangelio. La composición tridimensional sugiere una fe tangible, viva y que trasciende lo superficial."
+            },
+            {
+                id: 2,
+                src: "https://raw.githubusercontent.com/tsucesarherrera-afk/los-olivos/main/imagenes/WhatsApp%20Image%202026-06-17%20at%208.18.43%20AM%20(1).jpeg",
+                name: "Logo Los Olivos - Variante Clásica Dorada",
+                alt: "Logo clásico en tonos dorados sobre blanco",
+                colors: [
+                    { hex: "#DAA520", name: "Oro Clásico", desc: "Dorado tradicional cálido" },
+                    { hex: "#B8860B", name: "Oro Oscuro", desc: "Dorado profundo para sombras" },
+                    { hex: "#FFFFFF", name: "Blanco Puro", desc: "Fondo neutro elegante" },
+                    { hex: "#F5E6C8", name: "Crema Dorado", desc: "Reflejos suaves y luminosos" }
+                ],
+                composition: "Estructura clásica de emblema institucional con simetría perfecta. La corona-olivo como sello heráldico en la parte superior. El nombre 'LOS OLIVOS' con tracking amplio que transmite estabilidad. El eslogan inferior en escala reducida pero legible. Espaciado proporcional que respira elegancia.",
+                elements: [
+                    "Corona heráldica con diseño ornamental detallado",
+                    "Rama de olivo con follaje estilizado en verde dorado",
+                    "Letras serif con acabado metálico brillante",
+                    "Efecto de bisel y extrusión tridimensional",
+                    "Sistema de luces y sombras coherente"
+                ],
+                technique: "Diseño vectorial con gradientes lineales y radiales para simular volumen. Efecto de embossing en tipografía con sombra interna y externa. Optimización de curvas de Bézier para escalado sin pérdida. Hinting tipográfico para legibilidad en pantalla.",
+                meaning: "Esta variante clásica conecta con la tradición eclesiástica y la herencia espiritual. La corona heráldica evoca la 'corona de justicia' y el 'linaje real' del creyente. El olivo es remembranza del Monte de los Olivos, símbolo de oración, entrega y unción. El dorado clásico representa la gloria eterna y la riqueza incorruptible del Reino. La sobriedad del diseño transmite madurez espiritual y fundamento sólido en la Palabra."
+            },
+            {
+                id: 3,
+                src: "https://raw.githubusercontent.com/tsucesarherrera-afk/los-olivos/main/imagenes/WhatsApp%20Image%202026-06-17%20at%208.18.43%20AM%20(2).jpeg",
+                name: "Logo Los Olivos - Versión Plateada Transparente",
+                alt: "Logo en tonos plateados y dorados sobre fondo transparente",
+                colors: [
+                    { hex: "#C0C0C0", name: "Plata Cromada", desc: "Texto principal en acabado plateado" },
+                    { hex: "#A8A8A8", name: "Gris Plata", desc: "Tonos intermedios metálicos" },
+                    { hex: "#6B8E23", name: "Verde Oliva", desc: "Follaje natural y vibrante" },
+                    { hex: "#DAA520", name: "Oro Suave", desc: "Corona con tonos dorados elegantes" }
+                ],
+                composition: "Diseño versátil con canal alpha para fondos variables. Mantiene la estructura vertical clásica. La corona dorada contrasta elegantemente con el texto en plateado cromado. La rama de olivo en verde natural aporta el toque de vida y color. Acabado de biselado sutil en todos los elementos.",
+                elements: [
+                    "Corona real en tonos dorados con reflejos suaves",
+                    "Rama de olivo con hojas detalladas en verde natural",
+                    "Texto 'LOS OLIVOS' en plateado con efecto 3D",
+                    "Eslogan en gris plata con sombra proyectada",
+                    "Bordes redondeados y acabado pulido"
+                ],
+                technique: "Exportación en formato PNG con canal alpha de 8 bits. Trazado vectorial preciso para escalado infinito. Efecto de metal plateado con gradientes duotono plata-blanco. Textura de metal con reflejos ambientales sutiles. Compatibilidad óptima para impresión sobre cualquier fondo.",
+                meaning: "La versión transparente simboliza la adaptabilidad del evangelio a todo contexto. La plata representa la redención y la palabra pura ('más deseables que el oro'). El verde del olivo habla de madurez espiritual y raíces profundas en Cristo. La combinación dorado-plata sugiere la unión de lo celestial (oro) y lo terrenal redimido (plata). Es la versión más versátil, lista para manifestar el Reino en cualquier circunstancia de la vida."
+            },
+            {
+                id: 4,
+                src: "/mnt/agents/upload/image.png",
+                name: "Logo Los Olivos - Versión Original Dorada",
+                alt: "Logo original dorado sobre fondo transparente",
+                colors: [
+                    { hex: "#B8860B", name: "Oro Envejecido", desc: "Dorado profundo con matices cobrizos" },
+                    { hex: "#D4AF37", name: "Oro Metálico", desc: "Dorado brillante con reflejos" },
+                    { hex: "#8B7355", name: "Bronce", desc: "Tonos cálidos de transición" },
+                    { hex: "#2F4F4F", name: "Gris Oscuro", desc: "Sombreado y profundidad" }
+                ],
+                composition: "Composición vertical equilibrada con énfasis en el emblema superior. La corona-olivo fusionada crea un sello distintivo. El texto 'LOS OLIVOS' en serif clásica con peso visual dominante. 'LA EMBAJADA DEL REINO' como línea de autoridad inferior. Fondo transparente que permite versatilidad de aplicación.",
+                elements: [
+                    "Corona real con diseño de filigrado y detalles ornamentales",
+                    "Rama de olivo que atraviesa diagonalmente la corona",
+                    "Tipografía serif clásica con efecto de relieve dorado",
+                    "Sombras proyectadas para sensación tridimensional",
+                    "Detalles de joyería en la corona"
+                ],
+                technique: "Diseño digital con técnicas de ilustración vectorial. Gradientes complejos para simular metal dorado con múltiples fuentes de luz. Efecto de profundidad con capas de sombra. Optimización de transparencias para fondos variables. Acabado con textura sutil de metal.",
+                meaning: "El logo original encapsula la esencia de la identidad: la unión perfecta entre autoridad divina (corona) y gracia redentora (olivo). El dorado envejecido sugiere antigüedad, sabiduría y permanencia: valores eternos del Reino. La rama de olivo atravesando la corona simboliza que la paz y la unción son el fundamento de toda autoridad espiritual. Es la semilla visual de una embajada que representa al Rey de reyes con humildad y majestad."
+            }
+        ];
+
+        let currentImages = fallbackImages;
+        let selectedId = null;
+
+        // Función para renderizar la galería
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+
+            currentImages.forEach((img, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item' + (index === 0 ? ' active' : '');
+                item.onclick = () => selectImage(img.id);
+                
+                item.innerHTML = `
+                    <img src="${img.src}" alt="${img.alt}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22><rect fill=%22%231a1a1a%22 width=%22400%22 height=%22400%22/><text fill=%22%23C9A227%22 x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 font-family=%22serif%22 font-size=%2218%22>${img.name}</text></svg>'">
+                    <div class="overlay"><span>${img.name}</span></div>
+                    <div class="badge">#${img.id}</div>
+                `;
+                
+                grid.appendChild(item);
+            });
+
+            // Seleccionar la primera imagen por defecto
+            if (currentImages.length > 0) {
+                selectImage(currentImages[0].id);
+            }
+        }
+
+        // Función para seleccionar imagen y mostrar descripción
+        function selectImage(id) {
+            selectedId = id;
+            const img = currentImages.find(i => i.id === id);
+            if (!img) return;
+
+            // Actualizar clases activas
+            document.querySelectorAll('.gallery-item').forEach((el, idx) => {
+                el.classList.toggle('active', currentImages[idx].id === id);
+            });
+
+            // Actualizar nombre
+            document.getElementById('imageName').textContent = img.name;
+
+            // Renderizar descripción
+            const content = document.getElementById('descContent');
+            content.innerHTML = `
+                <div class="desc-content">
+                    <!-- Paleta de Colores -->
+                    <div class="desc-section">
+                        <h3><span class="icon">🎨</span> Paleta Cromática</h3>
+                        <div class="color-palette">
+                            ${img.colors.map(c => `
+                                <div class="color-swatch">
+                                    <div class="color-circle" style="background: ${c.hex}; box-shadow: 0 0 15px ${c.hex}40;" title="${c.desc}"></div>
+                                    <span class="color-label">${c.name}</span>
+                                    <span class="color-hex">${c.hex}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Composición -->
+                    <div class="desc-section">
+                        <h3><span class="icon">📐</span> Composición Visual</h3>
+                        <p>${img.composition}</p>
+                    </div>
+
+                    <!-- Elementos -->
+                    <div class="desc-section">
+                        <h3><span class="icon">✦</span> Elementos Gráficos</h3>
+                        <ul>
+                            ${img.elements.map(e => `<li>${e}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Técnica -->
+                    <div class="desc-section">
+                        <h3><span class="icon">⚙️</span> Técnica de Diseño</h3>
+                        <p>${img.technique}</p>
+                    </div>
+
+                    <!-- Significado -->
+                    <div class="significance-box">
+                        <h3>👑 Significado Simbólico</h3>
+                        <p>${img.meaning}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', renderGallery);
+    </script>
+</body>
+</html>
